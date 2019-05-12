@@ -1,66 +1,71 @@
 package eg.edu.alexu.csd.filestructure.btree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BTreeNode<K extends Comparable<K>,V> implements IBTreeNode<K, V> {
-
+	private boolean leaf ;
+	private int numOfKeys ;
+	private List<K> keys ;
+	private List<V>  values ;
+	private List<IBTreeNode<K, V>> children;
+	public BTreeNode() {
+		leaf = false;
+		keys = new ArrayList<>();
+		values = new ArrayList<>();
+		children = new ArrayList<>();
+		numOfKeys = 0;
+	}
 	@Override
 	public int getNumOfKeys() {
-		// TODO Auto-generated method stub
-		return 0;
+		return numOfKeys;
 	}
 
 	@Override
 	public void setNumOfKeys(int numOfKeys) {
-		// TODO Auto-generated method stub
-		
+		this.numOfKeys = numOfKeys;
 	}
 
 	@Override
 	public boolean isLeaf() {
-		// TODO Auto-generated method stub
-		return false;
+		return leaf;
 	}
 
 	@Override
 	public void setLeaf(boolean isLeaf) {
-		// TODO Auto-generated method stub
+		leaf = isLeaf;
 		
 	}
 
 	@Override
 	public List<K> getKeys() {
-		// TODO Auto-generated method stub
-		return null;
+		return keys;
 	}
 
 	@Override
 	public void setKeys(List<K> keys) {
-		// TODO Auto-generated method stub
-		
+	this.keys  = keys;	
 	}
 
 	@Override
 	public List<V> getValues() {
-		// TODO Auto-generated method stub
-		return null;
+		return values;
 	}
 
 	@Override
 	public void setValues(List<V> values) {
-		// TODO Auto-generated method stub
-		
+		this.values = values;
 	}
 
 	@Override
 	public List<IBTreeNode<K, V>> getChildren() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return children;
 	}
 
 	@Override
 	public void setChildren(List<IBTreeNode<K, V>> children) {
-		// TODO Auto-generated method stub
+		this.children  = children;
 		
 	}
 

@@ -1,7 +1,10 @@
 package eg.edu.alexu.csd.filestructure.btree;
 
 public class BTree<K extends Comparable<K>, V> implements IBTree<K ,V>  {
-
+	private IBTreeNode<K, V> root ;
+	public BTree() {
+		// TODO Auto-generated constructor stub
+	}
 	@Override
 	public int getMinimumDegree() {
 		// TODO Auto-generated method stub
