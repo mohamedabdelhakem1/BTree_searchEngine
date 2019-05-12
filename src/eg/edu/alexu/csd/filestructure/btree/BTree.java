@@ -2,19 +2,20 @@ package eg.edu.alexu.csd.filestructure.btree;
 
 public class BTree<K extends Comparable<K>, V> implements IBTree<K ,V>  {
 	private IBTreeNode<K, V> root ;
-	public BTree() {
-		// TODO Auto-generated constructor stub
+	private int minDegree ;
+	public BTree(int minDegree) {
+		this.minDegree = minDegree;
+		root = new BTreeNode<>();
 	}
 	@Override
 	public int getMinimumDegree() {
-		// TODO Auto-generated method stub
-		return 0;
+		return minDegree;
 	}
 
 	@Override
 	public IBTreeNode<K, V> getRoot() {
 		// TODO Auto-generated method stub
-		return null;
+		return root;
 	}
 
 	@Override
