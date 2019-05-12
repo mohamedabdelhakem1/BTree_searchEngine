@@ -10,7 +10,7 @@ public class BTreeNode<K extends Comparable<K>,V> implements IBTreeNode<K, V> {
 	private List<V>  values ;
 	private List<IBTreeNode<K, V>> children;
 	public BTreeNode() {
-		leaf = false;
+		leaf = true;
 		keys = new ArrayList<>();
 		values = new ArrayList<>();
 		children = new ArrayList<>();
