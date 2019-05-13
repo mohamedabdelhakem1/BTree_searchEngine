@@ -18,6 +18,11 @@ public class BTreeNode<K extends Comparable<K>,V> implements IBTreeNode<K, V> {
 		numOfKeys = 0;
 		parent = null;
 	}
+	
+	public int getIndex() {
+		return parent.getChildren().indexOf(this);
+	}
+	
 	@Override
 	public int getNumOfKeys() {
 		return numOfKeys;
@@ -68,7 +73,6 @@ public class BTreeNode<K extends Comparable<K>,V> implements IBTreeNode<K, V> {
 	@Override
 	public void setChildren(List<IBTreeNode<K, V>> children) {
 		this.children  = children;
-		
 	}
 	
 	public BTreeNode<K, V> getParent() {
