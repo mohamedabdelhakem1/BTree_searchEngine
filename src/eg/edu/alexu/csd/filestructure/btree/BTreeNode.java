@@ -9,7 +9,7 @@ public class BTreeNode<K extends Comparable<K>,V> implements IBTreeNode<K, V> {
 	private List<K> keys ;
 	private List<V>  values ;
 	private List<IBTreeNode<K, V>> children;
-	private BTreeNode<K, V> parent;
+	private IBTreeNode<K, V> parent;
 	public BTreeNode() {
 		leaf = true;
 		keys = new ArrayList<>();
@@ -75,11 +75,11 @@ public class BTreeNode<K extends Comparable<K>,V> implements IBTreeNode<K, V> {
 		this.children  = children;
 	}
 	
-	public BTreeNode<K, V> getParent() {
+	public IBTreeNode<K, V> getParent() {
 		return parent;
 	}
 	
-	public void setParent(BTreeNode<K, V> parent) {
+	public void setParent(IBTreeNode<K, V> parent) {
 		this.parent = parent;
 	}
 
