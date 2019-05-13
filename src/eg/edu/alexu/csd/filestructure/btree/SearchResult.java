@@ -2,6 +2,10 @@ package eg.edu.alexu.csd.filestructure.btree;
 
 public class SearchResult implements ISearchResult {
 
+	public SearchResult(String string, int i) {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public String getId() {
 		// TODO Auto-generated method stub
