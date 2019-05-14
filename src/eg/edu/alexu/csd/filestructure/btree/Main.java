@@ -12,12 +12,12 @@ public class Main {
 		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
-			List<Integer> inp = Arrays.asList(new Integer[]{1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21, 4, 5, 20, 22, 2, 17, 12, 6});
-			for (int i : inp)
+			//List<Integer> inp = Arrays.asList(new Integer[]{1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21, 4, 5, 20, 22, 2, 17, 12, 6});
+			for (int i = 0; i < 24; i++)
 				btree.insert(i, "Soso" + i);
 			IBTreeNode<Integer, String> root = btree.getRoot();
-//			List<List<List<?>>> keys = new ArrayList<>();
-//			traverseBtreePreOrder(root, 0, keys);
+			List<List<List<?>>> keys = new ArrayList<>();
+			traverseBtreePreOrder(root, 0, keys);
 //			List<List<List<?>>> ans = new ArrayList<>();
 //			List<List<?>> lvl0 = new ArrayList<>();
 //			lvl0.add(new ArrayList<>(Arrays.asList(new Integer[]{16})));
@@ -35,25 +35,30 @@ public class Main {
 //			ans.add(lvl0);
 //			ans.add(lvl1);
 //			ans.add(lvl2);
-//			for (int i = 0; i < keys.size(); i++) {
-//				for (int j = 0; j < keys.get(i).size(); j++) {
-//					//Assert.assertEquals(ans.get(i).get(j), keys.get(i).get(j));
-//					System.out.println(ans.get(i).get(j) + "      " + keys.get(i).get(j));
-//				}
-//			}
+			for (int i = 0; i < keys.size(); i++) {
+				for (int j = 0; j < keys.get(i).size(); j++) {
+					//Assert.assertEquals(ans.get(i).get(j), keys.get(i).get(j));
+					System.out.print(keys.get(i).get(j));
+				}
+				System.out.println();
+			}
 //			if(!verifyBTree(root, 0, getHeight(root), 3, root))
 //				Assert.fail();
 
-			System.out.println(root.getKeys());
-			System.out.println(root.getChildren().get(0).getKeys());
-			System.out.println(root.getChildren().get(1).getKeys());
-			System.out.println(root.getChildren().get(0).getChildren().get(0).getKeys());
-			System.out.println(root.getChildren().get(0).getChildren().get(1).getKeys());
-			System.out.println(root.getChildren().get(0).getChildren().get(2).getKeys());
-			System.out.println(root.getChildren().get(0).getChildren().get(3).getKeys());
-			System.out.println(root.getChildren().get(1).getChildren().get(0).getKeys());
-			System.out.println(root.getChildren().get(1).getChildren().get(1).getKeys());
-			System.out.println(root.getChildren().get(1).getChildren().get(2).getKeys());
+//			System.out.println(root.getKeys());
+//			System.out.println(root.getChildren().get(0).getKeys());
+//			System.out.println(root.getChildren().get(1).getKeys());
+////			System.out.println(root.getChildren().get(2).getKeys());
+////			System.out.println(root.getChildren().get(3).getKeys());
+////			System.out.println(root.getChildren().get(4).getKeys());
+////			System.out.println(root.getChildren().get(5).getKeys());
+//			System.out.println(root.getChildren().get(0).getChildren().get(0).getKeys());
+//			System.out.println(root.getChildren().get(0).getChildren().get(1).getKeys());
+//			System.out.println(root.getChildren().get(0).getChildren().get(2).getKeys());
+//			System.out.println(root.getChildren().get(0).getChildren().get(3).getKeys());
+//			System.out.println(root.getChildren().get(1).getChildren().get(0).getKeys());
+//			System.out.println(root.getChildren().get(1).getChildren().get(1).getKeys());
+//			System.out.println(root.getChildren().get(1).getChildren().get(2).getKeys());
 		} catch (Throwable e) {
 			TestRunner.fail("Fail to insert in tree", e);
 		}

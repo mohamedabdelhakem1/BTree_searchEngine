@@ -46,40 +46,39 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 		} else {
 			BTreeNode<K, V> z = (BTreeNode<K, V>) root;
 			while (!z.isLeaf()) {
-				List<K> keys = z.getKeys();
-				int i = 0;
-				K k = keys.get(i);
-				while (k != null && k.compareTo(key) < 0) {
-					i++;
-					try {
-						k = keys.get(i);
-					} catch (Exception e) {
-						k = null;
-					}
-					
+				int pos = 0;
+				while(pos < z.getNumOfKeys() && key.compareTo(z.getKeys().get(pos)) > 0) {
+					pos++;
 				}
-				if(k != null && k.compareTo(key) == 0) {
+				if(pos < z.getNumOfKeys() && z.getKeys().get(pos).compareTo(key) == 0) {
 					return;
 				}
-				z = (BTreeNode<K, V>) z.getChildren().get(i);
+				z = (BTreeNode<K, V>) z.getChildren().get(pos);
 			}
-//			System.out.println("            " + z.getKeys());
 			int pos = 0;
 			while(pos < z.getNumOfKeys() && key.compareTo(z.getKeys().get(pos)) > 0) {
 				pos++;
 			}
-			if(pos < z.getNumOfKeys() && z.getKeys().get(pos).compareTo(key) == 0) return;
-			z.getKeys().add(pos, key);
-			z.setNumOfKeys(z.getNumOfKeys() + 1);
-			z.getValues().add(pos, value);
-			//System.out.println("              " + z.getKeys());
-			insertFixup(z);
+			if(pos < z.getNumOfKeys() && z.getKeys().get(pos).compareTo(key) == 0) {
+				return;
+			}
+			insertFixup(z, key, value);
 		}
 
 	}
 
-	private void insertFixup(BTreeNode<K, V> n) {
+	private void insertFixup(BTreeNode<K, V> n, K key, V value) {
 		if(n == null || n.getNumOfKeys() < maxDegree) {
+			int pos = 0;
+			while(pos < n.getNumOfKeys() && key.compareTo(n.getKeys().get(pos)) > 0) {
+				pos++;
+			}
+			if(pos < n.getNumOfKeys() && n.getKeys().get(pos).compareTo(key) == 0) {
+				return;
+			}
+			n.getKeys().add(pos, key);
+			n.setNumOfKeys(n.getNumOfKeys() + 1);
+			n.getValues().add(pos, value);
 			return;
 		} else {
 			int splitIndex = (n.getNumOfKeys() / 2);
@@ -90,8 +89,6 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 			K k = n.getKeys().get(splitIndex);
 			V v = n.getValues().get(splitIndex);
 			if(!n.isLeaf()) {
-				List<IBTreeNode<K, V>> leftC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(0, splitIndex + 1));
-				List<IBTreeNode<K, V>> rightC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(splitIndex + 1, n.getChildren().size()));
 				//System.out.println(n.getNumOfKeys());
 				if(n.getParent() == null) {
 					root = new BTreeNode<K, V>();
@@ -103,7 +100,7 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 					left.setValues(leftValues);
 					left.setLeaf(false);
 					left.setNumOfKeys(leftKeys.size());
-					left.setChildren(leftC);
+					//left.setChildren(leftC);
 					left.setParent(root);
 					//System.out.println("  "+left.getChildren().get(1).getKeys());
 					BTreeNode<K, V> right = new BTreeNode<K, V>();
@@ -111,35 +108,83 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 					right.setValues(rightValues);
 					right.setLeaf(false);
 					right.setNumOfKeys(rightKeys.size());
-					right.setChildren(rightC);
+					//right.setChildren(rightC);
 					right.setParent(root);
 					root.getChildren().add(0, left);
 					root.getChildren().add(1, right);
 					root.setLeaf(false);
 					root.setNumOfKeys(1);
+					if(key.compareTo(n.getKeys().get(splitIndex)) < 0) {
+						List<IBTreeNode<K, V>> leftC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(0, splitIndex + 2));
+						List<IBTreeNode<K, V>> rightC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(splitIndex + 2, n.getChildren().size()));
+						int pos = 0;
+						while(pos < left.getNumOfKeys() && key.compareTo(left.getKeys().get(pos)) > 0) {
+							pos++;
+						}
+						left.getKeys().add(pos, key);
+						left.setNumOfKeys(left.getNumOfKeys() + 1);
+						left.getValues().add(pos, value);
+						left.setChildren(leftC);
+						right.setChildren(rightC);
+					} else {
+						List<IBTreeNode<K, V>> leftC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(0, splitIndex + 1));
+						List<IBTreeNode<K, V>> rightC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(splitIndex + 1, n.getChildren().size()));
+						int pos = 0;
+						while(pos < right.getNumOfKeys() && key.compareTo(right.getKeys().get(pos)) > 0) {
+							pos++;
+						}
+						right.getKeys().add(pos, key);
+						right.setNumOfKeys(right.getNumOfKeys() + 1);
+						right.getValues().add(pos, value);
+						left.setChildren(leftC);
+						right.setChildren(rightC);
+					}
 				} else {
 					int index = n.getIndex();
 					BTreeNode<K, V> parent = (BTreeNode<K, V>) n.getParent();
-					parent.getKeys().add(index, k);
-					parent.getValues().add(index, v);
 					parent.getChildren().remove(index);
 					BTreeNode<K, V> left = new BTreeNode<K, V>();
 					left.setKeys(leftKeys);
 					left.setValues(leftValues);
 					left.setLeaf(false);
 					left.setNumOfKeys(leftKeys.size());
-					left.setChildren(leftC);
+					//left.setChildren(leftC);
 					left.setParent(parent);
 					BTreeNode<K, V> right = new BTreeNode<K, V>();
 					right.setKeys(rightKeys);
 					right.setValues(rightValues);
 					right.setLeaf(false);
 					right.setNumOfKeys(rightKeys.size());
-					right.setChildren(rightC);
+					//right.setChildren(rightC);
 					right.setParent(parent);
 					parent.getChildren().add(index, left);
 					parent.getChildren().add(index + 1, right);
-					parent.setNumOfKeys(parent.getNumOfKeys() + 1);
+					if(key.compareTo(n.getKeys().get(splitIndex)) < 0) {
+						List<IBTreeNode<K, V>> leftC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(0, splitIndex + 2));
+						List<IBTreeNode<K, V>> rightC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(splitIndex + 2, n.getChildren().size()));
+						int pos = 0;
+						while(pos < left.getNumOfKeys() && key.compareTo(left.getKeys().get(pos)) > 0) {
+							pos++;
+						}
+						left.getKeys().add(pos, key);
+						left.setNumOfKeys(left.getNumOfKeys() + 1);
+						left.getValues().add(pos, value);
+						left.setChildren(leftC);
+						right.setChildren(rightC);
+					} else {
+						List<IBTreeNode<K, V>> leftC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(0, splitIndex + 1));
+						List<IBTreeNode<K, V>> rightC = new ArrayList<IBTreeNode<K,V>>(n.getChildren().subList(splitIndex + 1, n.getChildren().size()));
+						int pos = 0;
+						while(pos < right.getNumOfKeys() && key.compareTo(right.getKeys().get(pos)) > 0) {
+							pos++;
+						}
+						right.getKeys().add(pos, key);
+						right.setNumOfKeys(right.getNumOfKeys() + 1);
+						right.getValues().add(pos, value);
+						left.setChildren(leftC);
+						right.setChildren(rightC);
+					}
+					insertFixup(parent, k, v);
 				}
 			} else {
 				if(n.getParent() == null) {
@@ -163,12 +208,33 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 					root.getChildren().add(1, right);
 					root.setLeaf(false);
 					root.setNumOfKeys(1);
+					if(key.compareTo(n.getKeys().get(splitIndex)) < 0) {
+						int pos = 0;
+						while(pos < left.getNumOfKeys() && key.compareTo(left.getKeys().get(pos)) > 0) {
+							pos++;
+						}
+						if(pos < right.getNumOfKeys() && right.getKeys().get(pos).compareTo(key) == 0) {
+							return;
+						}
+						left.getKeys().add(pos, key);
+						left.setNumOfKeys(left.getNumOfKeys() + 1);
+						left.getValues().add(pos, value);
+					} else {
+						int pos = 0;
+						while(pos < right.getNumOfKeys() && key.compareTo(right.getKeys().get(pos)) > 0) {
+							pos++;
+						}
+						if(pos < right.getNumOfKeys() && right.getKeys().get(pos).compareTo(key) == 0) {
+							return;
+						}
+						right.getKeys().add(pos, key);
+						right.setNumOfKeys(right.getNumOfKeys() + 1);
+						right.getValues().add(pos, value);
+					}
 				} else {
 					int index = n.getIndex();
 					BTreeNode<K, V> parent = (BTreeNode<K, V>) n.getParent();
-					parent.getKeys().add(index, k);
-					//System.out.println("                  "+parent.getKeys());
-					parent.getValues().add(index, v);
+					//System.out.println("          " + parent.getKeys());
 					parent.getChildren().remove(index);
 					BTreeNode<K, V> left = new BTreeNode<K, V>();
 					left.setKeys(leftKeys);
@@ -184,36 +250,57 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 					right.setParent(parent);
 					parent.getChildren().add(index, left);
 					parent.getChildren().add(index + 1, right);
-					parent.setNumOfKeys(parent.getNumOfKeys() + 1);
-//					System.out.println("                   "+parent.getChildren().get(index).getKeys());
-//					System.out.println("-------------------"+parent.getChildren().get(index+1).getKeys());
+					if(key.compareTo(n.getKeys().get(splitIndex)) < 0) {
+						int pos = 0;
+						while(pos < left.getNumOfKeys() && key.compareTo(left.getKeys().get(pos)) > 0) {
+							pos++;
+						}
+						if(pos < right.getNumOfKeys() && right.getKeys().get(pos).compareTo(key) == 0) {
+							return;
+						}
+						left.getKeys().add(pos, key);
+						left.setNumOfKeys(left.getNumOfKeys() + 1);
+						left.getValues().add(pos, value);
+					} else {
+						int pos = 0;
+						while(pos < right.getNumOfKeys() && key.compareTo(right.getKeys().get(pos)) > 0) {
+							pos++;
+						}
+						if(pos < right.getNumOfKeys() && right.getKeys().get(pos).compareTo(key) == 0) {
+							return;
+						}
+						right.getKeys().add(pos, key);
+						right.setNumOfKeys(right.getNumOfKeys() + 1);
+						right.getValues().add(pos, value);
+					}
+					//parent.setNumOfKeys(parent.getNumOfKeys() + 1);
+					insertFixup(parent, k, v);
 				}
 			}
-			insertFixup((BTreeNode<K, V>) n.getParent());
 		}
 	}
 	
 	@Override
 	public V search(K key) {
+		if(key == null) throw new RuntimeErrorException(new Error());
 		BTreeNode<K, V> z = (BTreeNode<K, V>) root;
 		while (!z.isLeaf()) {
-			List<K> keys = z.getKeys();
-			int i = 0;
-			K k = keys.get(i);
-			while (k != null && k.compareTo(key) < 0) {
-				i++;
-				k = keys.get(i);
+			int pos = 0;
+			while(pos < z.getNumOfKeys() && key.compareTo(z.getKeys().get(pos)) > 0) {
+				pos++;
 			}
-			if(k != null && k.compareTo(key) == 0) {
-				return z.getValues().get(i);
+			if(pos < z.getNumOfKeys() && z.getKeys().get(pos).compareTo(key) == 0) {
+				return z.getValues().get(pos);
 			}
-			z = (BTreeNode<K, V>) z.getChildren().get(i);
+			z = (BTreeNode<K, V>) z.getChildren().get(pos);
 		}
 		int pos = 0;
 		while(pos < z.getNumOfKeys() && key.compareTo(z.getKeys().get(pos)) > 0) {
 			pos++;
 		}
-		if(z.getKeys().get(pos).compareTo(key) == 0) return z.getValues().get(pos);
+		if(pos < z.getNumOfKeys() && z.getKeys().get(pos).compareTo(key) == 0) {
+			return z.getValues().get(pos);
+		}
 		return null;
 	}
 

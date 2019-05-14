@@ -73,6 +73,9 @@ public class BTreeNode<K extends Comparable<K>,V> implements IBTreeNode<K, V> {
 	@Override
 	public void setChildren(List<IBTreeNode<K, V>> children) {
 		this.children  = children;
+		for(IBTreeNode<K, V> child : children) {
+			((BTreeNode<K, V>) child).setParent(this);
+		}
 	}
 	
 	public IBTreeNode<K, V> getParent() {
