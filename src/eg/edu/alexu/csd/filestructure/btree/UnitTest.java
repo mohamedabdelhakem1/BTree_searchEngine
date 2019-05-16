@@ -1,27 +1,17 @@
 package eg.edu.alexu.csd.filestructure.btree;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Random;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
-
 import javax.management.RuntimeErrorException;
-
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -739,9 +729,6 @@ public class UnitTest {
 	private boolean verifyBTree(IBTreeNode<?, ?> node, int lvl, int height, int t, IBTreeNode<?, ?> root) {
 		if (!node.equals(root)) {
 			if (node.getNumOfKeys() < t - 1 || node.getNumOfKeys() > 2 * t - 1) {
-				System.out.println(root.getKeys());
-				System.out.println(node.getKeys());
-				System.out.println(((BTreeNode<Integer, String>) node).getParent().getKeys());
 				return false;
 				}
 		}
