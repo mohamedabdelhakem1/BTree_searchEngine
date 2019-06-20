@@ -1,39 +1,49 @@
 package eg.edu.alexu.csd.filestructure.btree;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
+
 import javax.management.RuntimeErrorException;
+
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Test;
+
 
 public class UnitTest {
 	private final boolean debug = false;
 
-	/**
+	/** 
 	 * test get a null root.
 	 */
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testRootNull() {
 
-		IBTree<String, String> btree = (IBTree<String, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<String, String> btree = (IBTree<String, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 		IBTreeNode<String, String> root = null;
 
 		try {
 			root = btree.getRoot();
 			if (debug)
 				System.out.println("TestRootNull: (case null)");
-			if (root != null)
+			if (root != null) 
 				Assert.fail();
 		} catch (RuntimeErrorException ex) {
 			if (debug)
@@ -50,8 +60,7 @@ public class UnitTest {
 	@Test
 	public void testGetRoot() {
 
-		IBTree<String, String> btree = (IBTree<String, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<String, String> btree = (IBTree<String, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 		IBTreeNode<String, String> root = null;
 
 		try {
@@ -60,7 +69,7 @@ public class UnitTest {
 			Assert.assertEquals(1, root.getNumOfKeys());
 			Assert.assertEquals("Soso", root.getKeys().get(0));
 			Assert.assertEquals("Toto", root.getValues().get(0));
-		} catch (Throwable e) {
+		}catch (Throwable e) {
 			TestRunner.fail("Fail to getRoot of tree", e);
 		}
 	}
@@ -72,8 +81,7 @@ public class UnitTest {
 	@Test
 	public void testGetRootFull() {
 
-		IBTree<String, String> btree = (IBTree<String, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<String, String> btree = (IBTree<String, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 		IBTreeNode<String, String> root = null;
 
 		try {
@@ -91,7 +99,7 @@ public class UnitTest {
 			Assert.assertTrue(root.isLeaf());
 			if (root.getChildren() != null)
 				Assert.assertEquals(0, root.getChildren().size());
-		} catch (Throwable e) {
+		}catch (Throwable e) {
 			TestRunner.fail("Fail to getRoot of tree", e);
 		}
 	}
@@ -103,8 +111,7 @@ public class UnitTest {
 	@Test
 	public void testGetRootSplitCase() {
 
-		IBTree<String, String> btree = (IBTree<String, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<String, String> btree = (IBTree<String, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 		IBTreeNode<String, String> root = null;
 
 		try {
@@ -138,7 +145,7 @@ public class UnitTest {
 			Assert.assertFalse(root.isLeaf());
 			Assert.assertTrue(left.isLeaf());
 			Assert.assertTrue(right.isLeaf());
-		} catch (Throwable e) {
+		}catch (Throwable e) {
 			TestRunner.fail("Fail to getRoot of tree", e);
 		}
 	}
@@ -150,16 +157,17 @@ public class UnitTest {
 	public void testGetMinimumDegreeInvalid() {
 
 		try {
-			TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[] { 0 });
+			TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{0});
 			Assert.fail();
-		} catch (RuntimeErrorException ex) {
+		} catch(RuntimeErrorException ex) {
 			try {
-				TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[] { 1 });
+				TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{1});
 				Assert.fail();
-			} catch (RuntimeErrorException ex1) {
+			} catch(RuntimeErrorException ex1) {
 
 			}
-		} catch (Throwable e) {
+		}
+		catch (Throwable e) {
 			TestRunner.fail("Fail to getMinimumDegree", e);
 		}
 	}
@@ -172,15 +180,16 @@ public class UnitTest {
 	public void testGetMinimumDegree() {
 
 		try {
-			for (int i = 2; i < 10; i++) {
-				IBTree<String, String> btree = (IBTree<String, String>) TestRunner
-						.getImplementationInstanceForInterface(IBTree.class, new Object[] { i });
+			for (int i = 2; i < 10; i++) {				
+				IBTree<String, String> btree = (IBTree<String, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{i});
 				Assert.assertEquals(i, btree.getMinimumDegree());
 			}
-		} catch (Throwable e) {
+		}
+		catch (Throwable e) {
 			TestRunner.fail("Fail to getMinimumDegree", e);
 		}
 	}
+
 
 	/**
 	 * Test insertion with invalid parameter.
@@ -189,8 +198,7 @@ public class UnitTest {
 	@Test
 	public void testInsertionInvalid() {
 
-		IBTree<String, String> btree = (IBTree<String, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<String, String> btree = (IBTree<String, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
 			btree.insert(null, "Soso");
@@ -213,8 +221,7 @@ public class UnitTest {
 	@Test
 	public void testInsertionSimple() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 5 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{5});
 
 		try {
 			Random r = new Random();
@@ -234,7 +241,7 @@ public class UnitTest {
 				Assert.assertEquals("Toto" + rndNum.get(i), root.getValues().get(i));
 			}
 
-			if (!verifyBTree(root, 0, getHeight(root), 5, root))
+			if(!verifyBTree(root, 0, getHeight(root), 5, root))
 				Assert.fail();
 
 		} catch (Throwable e) {
@@ -249,8 +256,7 @@ public class UnitTest {
 	@Test
 	public void testInsertionDuplicate() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 5 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{5});
 
 		try {
 			btree.insert(3, "Soso2");
@@ -264,7 +270,7 @@ public class UnitTest {
 			Assert.assertEquals(3, root.getKeys().get(0).intValue());
 			Assert.assertEquals("Soso2", root.getValues().get(0));
 
-			if (!verifyBTree(root, 0, getHeight(root), 5, root))
+			if(!verifyBTree(root, 0, getHeight(root), 5, root))
 				Assert.fail();
 
 		} catch (Throwable e) {
@@ -279,12 +285,10 @@ public class UnitTest {
 	@Test
 	public void testInsertionComplex1() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
-			List<Integer> inp = Arrays.asList(new Integer[] { 1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21,
-					4, 5, 20, 22, 2, 17, 12, 6 });
+			List<Integer> inp = Arrays.asList(new Integer[]{1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21, 4, 5, 20, 22, 2, 17, 12, 6});
 			for (int i : inp)
 				btree.insert(i, "Soso" + i);
 
@@ -293,18 +297,18 @@ public class UnitTest {
 			traverseBtreePreOrder(root, 0, keys);
 			List<List<List<?>>> ans = new ArrayList<>();
 			List<List<?>> lvl0 = new ArrayList<>();
-			lvl0.add(new ArrayList<>(Arrays.asList(new Integer[] { 16 })));
+			lvl0.add(new ArrayList<>(Arrays.asList(new Integer[]{16})));
 			List<List<?>> lvl1 = new ArrayList<>();
-			lvl1.add(new ArrayList<>(Arrays.asList(new Integer[] { 3, 7, 13 })));
-			lvl1.add(new ArrayList<>(Arrays.asList(new Integer[] { 20, 24 })));
+			lvl1.add(new ArrayList<>(Arrays.asList(new Integer[]{3, 7, 13})));
+			lvl1.add(new ArrayList<>(Arrays.asList(new Integer[]{20, 24})));
 			List<List<?>> lvl2 = new ArrayList<>();
-			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[] { 1, 2 })));
-			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[] { 4, 5, 6 })));
-			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[] { 10, 11, 12 })));
-			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[] { 14, 15 })));
-			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[] { 17, 18, 19 })));
-			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[] { 21, 22 })));
-			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[] { 25, 26 })));
+			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[]{1, 2})));
+			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[]{4, 5, 6})));
+			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[]{10, 11, 12})));
+			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[]{14, 15})));
+			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[]{17, 18, 19})));
+			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[]{21, 22})));
+			lvl2.add(new ArrayList<>(Arrays.asList(new Integer[]{25, 26})));
 			ans.add(lvl0);
 			ans.add(lvl1);
 			ans.add(lvl2);
@@ -313,13 +317,14 @@ public class UnitTest {
 					Assert.assertEquals(ans.get(i).get(j), keys.get(i).get(j));
 				}
 			}
-			if (!verifyBTree(root, 0, getHeight(root), 3, root))
+			if(!verifyBTree(root, 0, getHeight(root), 3, root))
 				Assert.fail();
 
 		} catch (Throwable e) {
 			TestRunner.fail("Fail to insert in tree", e);
 		}
 	}
+
 
 	/**
 	 * Test insertion complex case 2.
@@ -328,8 +333,7 @@ public class UnitTest {
 	@Test
 	public void testInsertionComplex2() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
 			Random r = new Random();
@@ -351,13 +355,14 @@ public class UnitTest {
 				Assert.assertEquals("Soso" + i, vals.get(index));
 				index++;
 			}
-			if (!verifyBTree(btree.getRoot(), 0, getHeight(btree.getRoot()), 3, btree.getRoot()))
+			if(!verifyBTree(btree.getRoot(), 0, getHeight(btree.getRoot()), 3, btree.getRoot()))
 				Assert.fail();
 
 		} catch (Throwable e) {
 			TestRunner.fail("Fail to search in tree", e);
 		}
 	}
+
 
 	/**
 	 * Test insertion complex case 3.
@@ -366,8 +371,7 @@ public class UnitTest {
 	@Test
 	public void testInsertionComplex3() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 10 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{10});
 
 		try {
 			Random r = new Random();
@@ -389,7 +393,7 @@ public class UnitTest {
 				Assert.assertEquals("Soso" + i, vals.get(index));
 				index++;
 			}
-			if (!verifyBTree(btree.getRoot(), 0, getHeight(btree.getRoot()), 10, btree.getRoot()))
+			if(!verifyBTree(btree.getRoot(), 0, getHeight(btree.getRoot()), 10, btree.getRoot()))
 				Assert.fail();
 		} catch (Throwable e) {
 			TestRunner.fail("Fail to search in tree", e);
@@ -402,8 +406,7 @@ public class UnitTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testSearchInvalid() {
-		IBTree<String, String> btree = (IBTree<String, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<String, String> btree = (IBTree<String, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
 			btree.search(null);
@@ -421,8 +424,7 @@ public class UnitTest {
 	@Test
 	public void testSearchSimple() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 5 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{5});
 
 		try {
 			Random r = new Random();
@@ -435,7 +437,7 @@ public class UnitTest {
 
 			for (int i = 0; i < rndNum.size(); i++) {
 				int searchKey = rndNum.get(i);
-				Assert.assertEquals("Lolo" + searchKey, btree.search(searchKey));
+				Assert.assertEquals("Lolo" + searchKey, btree.search(searchKey));				
 			}
 		} catch (Throwable e) {
 			TestRunner.fail("Fail to search in tree", e);
@@ -449,18 +451,16 @@ public class UnitTest {
 	@Test
 	public void testSearchSimple2() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
-			List<Integer> inp = Arrays.asList(new Integer[] { 1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21,
-					4, 5, 20, 22, 2, 17, 12, 6 });
+			List<Integer> inp = Arrays.asList(new Integer[]{1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21, 4, 5, 20, 22, 2, 17, 12, 6});
 			for (int i : inp)
 				btree.insert(i, "Soso" + i);
 
 			for (int i = 0; i < inp.size(); i++) {
 				int searchKey = inp.get(i);
-				Assert.assertEquals("Soso" + searchKey, btree.search(searchKey));
+				Assert.assertEquals("Soso" + searchKey, btree.search(searchKey));				
 			}
 
 		} catch (Throwable e) {
@@ -475,8 +475,7 @@ public class UnitTest {
 	@Test
 	public void testSearchDuplicate() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 5 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{5});
 
 		try {
 			btree.insert(3, "Soso2");
@@ -498,13 +497,11 @@ public class UnitTest {
 	@Test
 	public void testSearchModifyValue() {
 
-		IBTree<Integer, List<String>> btree = (IBTree<Integer, List<String>>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 5 });
+		IBTree<Integer, List<String>> btree = (IBTree<Integer, List<String>>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{5});
 
 		try {
 			List<String> val = new ArrayList<>();
-			val.add("koko");
-			val.add("toto");
+			val.add("koko"); val.add("toto");
 			btree.insert(3, val);
 			List<String> ans = btree.search(3);
 			Assert.assertEquals(val.size(), ans.size());
@@ -528,12 +525,10 @@ public class UnitTest {
 	@Test
 	public void testSearchNotFound() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
-			List<Integer> inp = Arrays.asList(new Integer[] { 1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21,
-					4, 5, 20, 22, 2, 17, 12, 6 });
+			List<Integer> inp = Arrays.asList(new Integer[]{1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21, 4, 5, 20, 22, 2, 17, 12, 6});
 			for (int i : inp)
 				btree.insert(i, "Soso" + i);
 
@@ -552,8 +547,7 @@ public class UnitTest {
 	@Test
 	public void testDeletionInvalid() {
 
-		IBTree<String, String> btree = (IBTree<String, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<String, String> btree = (IBTree<String, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
 			btree.delete(null);
@@ -571,8 +565,7 @@ public class UnitTest {
 	@Test
 	public void testDeletionSimple() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 5 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{5});
 
 		try {
 			Random r = new Random();
@@ -589,8 +582,9 @@ public class UnitTest {
 
 			for (int i = 0; i < rndNum.size(); i++) {
 				Assert.assertTrue(btree.delete(rndNum.get(i)));
-				Assert.assertTrue(verifyBTree(root, 0, getHeight(root), 5, root));
+				Assert.assertTrue(verifyBTree(root, 0, getHeight(root), 5, root));				
 			}
+
 
 		} catch (Throwable e) {
 			TestRunner.fail("Fail to delete in tree", e);
@@ -604,12 +598,10 @@ public class UnitTest {
 	@Test
 	public void testDeletionComplex1() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
-			List<Integer> inp = Arrays.asList(new Integer[] { 1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21,
-					4, 5, 20, 22, 2, 17, 12, 6 });
+			List<Integer> inp = Arrays.asList(new Integer[]{1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21, 4, 5, 20, 22, 2, 17, 12, 6});
 			for (int i : inp)
 				btree.insert(i, "Soso" + i);
 
@@ -632,12 +624,10 @@ public class UnitTest {
 	@Test
 	public void testDeletionComplex2() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
-			List<Integer> inp = Arrays.asList(new Integer[] { 1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21,
-					4, 5, 20, 22, 2, 17, 12, 6 });
+			List<Integer> inp = Arrays.asList(new Integer[]{1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21, 4, 5, 20, 22, 2, 17, 12, 6});
 			for (int i : inp)
 				btree.insert(i, "Soso" + i);
 
@@ -662,7 +652,7 @@ public class UnitTest {
 		} catch (Throwable e) {
 			TestRunner.fail("Fail to delete in tree", e);
 		}
-	}
+	}	
 
 	/**
 	 * Test deletion complex case 3.
@@ -671,8 +661,7 @@ public class UnitTest {
 	@Test
 	public void testDeletionComplex3() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
 			Random r = new Random();
@@ -682,8 +671,7 @@ public class UnitTest {
 				int key = r.nextInt(Integer.MAX_VALUE);
 				btree.insert(key, "Soso" + key);
 				set.add(key);
-				if (r.nextInt(5) % 4 == 0)
-					deleteSet.add(key);
+				if (r.nextInt(5) % 4 == 0) deleteSet.add(key);
 			}
 			List<Integer> keys = new ArrayList<>();
 			List<String> vals = new ArrayList<>();
@@ -695,55 +683,12 @@ public class UnitTest {
 				Assert.assertTrue(btree.delete(i));
 				Assert.assertNull(btree.search(i));
 			}
-			Queue<BTreeNode<Integer, String>> q = new LinkedList<>();
-			int iter = 0;
-			int next = 1;
-
-			q.add((BTreeNode<Integer, String>) btree.getRoot());
-			while (!q.isEmpty()) {
-				BTreeNode<Integer, String> node = q.poll();
-				 System.out.print(node.getKeys());
-				System.out.print(node.isLeaf());
-				System.out.print(" " + node.getNumOfKeys() + " " + node.getChildren().size() + " ");
-
-				for (IBTreeNode<Integer, String> n : node.getChildren()) {
-					q.add((BTreeNode<Integer, String>) n);
-				}
-				iter++;
-
-				if (iter == next) {
-					iter = 0;
-					next = q.size();
-					System.out.println();
-				}
-
-			}
-			if (!verifyBTree(btree.getRoot(), 0, getHeight(btree.getRoot()), 3, btree.getRoot()))
+			if(!verifyBTree(btree.getRoot(), 0, getHeight(btree.getRoot()), 3, btree.getRoot()))
 				Assert.fail();
 
 		} catch (Throwable e) {
 			TestRunner.fail("Fail to search in tree", e);
 		}
-	}
-
-	private boolean verifyBTree(IBTreeNode<?, ?> node, int lvl, int height, int t, IBTreeNode<?, ?> root) {
-		if (!node.equals(root)) {
-			if (node.getNumOfKeys() < t - 1 || node.getNumOfKeys() > 2 * t - 1) {
-				return false;
-				}
-		}
-		boolean ans = true;
-		if (!node.isLeaf()) {
-			for (int i = 0; i <= node.getNumOfKeys(); i++) {
-				ans = ans && verifyBTree(node.getChildren().get(i), lvl + 1, height, t, root);
-				if (!ans)
-					break;
-			}
-
-		} else {
-			ans = ans && (lvl == height);
-		}
-		return ans;
 	}
 
 	/**
@@ -753,12 +698,10 @@ public class UnitTest {
 	@Test
 	public void testDeletionNotFound() {
 
-		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner
-				.getImplementationInstanceForInterface(IBTree.class, new Object[] { 3 });
+		IBTree<Integer, String> btree = (IBTree<Integer, String>) TestRunner.getImplementationInstanceForInterface(IBTree.class, new Object[]{3});
 
 		try {
-			List<Integer> inp = Arrays.asList(new Integer[] { 1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21,
-					4, 5, 20, 22, 2, 17, 12, 6 });
+			List<Integer> inp = Arrays.asList(new Integer[]{1, 3, 7, 10, 11, 13, 14, 15, 18, 16, 19, 24, 25, 26, 21, 4, 5, 20, 22, 2, 17, 12, 6});
 			for (int i : inp)
 				btree.insert(i, "Soso" + i);
 
@@ -770,14 +713,14 @@ public class UnitTest {
 		}
 	}
 
+
 	/**
 	 * Test index web page with null or empty parameter or not found file.
 	 */
 	@Test
 	public void testindexWebPageNullorEmptyorNotFoundParamter() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 
 		try {
 			searchEngine.indexWebPage(null);
@@ -792,7 +735,8 @@ public class UnitTest {
 				} catch (RuntimeErrorException ex2) {
 				}
 			}
-		} catch (Throwable e) {
+		}
+		catch (Throwable e) {
 			TestRunner.fail("Fail to index web page", e);
 		}
 	}
@@ -803,19 +747,18 @@ public class UnitTest {
 	@Test
 	public void testindexWebPage() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 		/**
-		 * This test should be modified according to the testing file and the search
-		 * query. You should test your implementation against cases including: 1- word
-		 * that does not exist in tree. 2- word exists. 3- lower case, upper case, mix
-		 * btw lower and upper, e.g.. THE, the, ThE, tHE.... According to each change
-		 * you should modify the expected variable to have the expected outcome.
+		 * This test should be modified according to the testing file and the search query.
+		 * You should test your implementation against cases including:
+		 * 1- word that does not exist in tree.
+		 * 2- word exists.
+		 * 3- lower case, upper case, mix btw lower and upper, e.g.. THE, the, ThE, tHE....
+		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
 			searchEngine.indexWebPage("res\\wiki_00");
-			List<ISearchResult> expected = Arrays
-					.asList(new SearchResult[] { new SearchResult("7697605", 1), new SearchResult("7697611", 10) });
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
@@ -836,14 +779,14 @@ public class UnitTest {
 		}
 	}
 
+
 	/**
 	 * Test index web directory with null or empty parameter or not found directory.
 	 */
 	@Test
 	public void testindexWebDirectoryNullorEmptyorNotFoundParamter() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 
 		try {
 			searchEngine.indexDirectory(null);
@@ -858,7 +801,8 @@ public class UnitTest {
 				} catch (RuntimeErrorException ex2) {
 				}
 			}
-		} catch (Throwable e) {
+		}
+		catch (Throwable e) {
 			TestRunner.fail("Fail to index directory", e);
 		}
 	}
@@ -869,21 +813,19 @@ public class UnitTest {
 	@Test
 	public void testindexDirectorySimple() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 		/**
-		 * This test should be modified according to the testing directory and the
-		 * search query. You should make sure that the test can support multiple file in
-		 * the same directory. You should test your implementation against cases
-		 * including: 1- word that does not exist in tree. 2- word exists. 3- lower
-		 * case, upper case, mix btw lower and upper, e.g.. THE, the, ThE, tHE....
-		 * According to each change you should modify the expected variable to have the
-		 * expected outcome.
+		 * This test should be modified according to the testing directory and the search query.
+		 * You should make sure that the test can support multiple file in the same directory.
+		 * You should test your implementation against cases including:
+		 * 1- word that does not exist in tree.
+		 * 2- word exists.
+		 * 3- lower case, upper case, mix btw lower and upper, e.g.. THE, the, ThE, tHE....
+		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
 			searchEngine.indexDirectory("res");
-			List<ISearchResult> expected = Arrays
-					.asList(new SearchResult[] { new SearchResult("7697605", 1), new SearchResult("7697611", 10) });
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
@@ -910,21 +852,20 @@ public class UnitTest {
 	@Test
 	public void testindexWebDirectoryComplex() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 		/**
-		 * This test should be modified according to the testing directory and the
-		 * search query. You should make sure that the test can support multiple file in
-		 * the same directory or nested directory up to multiple level. You should test
-		 * your implementation against cases including: 1- word that does not exist in
-		 * tree. 2- word exists. 3- lower case, upper case, mix btw lower and upper,
-		 * e.g.. THE, the, ThE, tHE.... According to each change you should modify the
-		 * expected variable to have the expected outcome.
+		 * This test should be modified according to the testing directory and the search query.
+		 * You should make sure that the test can support multiple file in the same directory 
+		 * or nested directory up to multiple level.
+		 * You should test your implementation against cases including:
+		 * 1- word that does not exist in tree.
+		 * 2- word exists.
+		 * 3- lower case, upper case, mix btw lower and upper, e.g.. THE, the, ThE, tHE....
+		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
 			searchEngine.indexDirectory("res");
-			List<ISearchResult> expected = Arrays
-					.asList(new SearchResult[] { new SearchResult("7697605", 1), new SearchResult("7697611", 10) });
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
@@ -951,8 +892,7 @@ public class UnitTest {
 	@Test
 	public void testDeleteWebPageNullorEmptyorNotFoundParamter() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 
 		try {
 			searchEngine.deleteWebPage(null);
@@ -967,7 +907,8 @@ public class UnitTest {
 				} catch (RuntimeErrorException ex2) {
 				}
 			}
-		} catch (Throwable e) {
+		}
+		catch (Throwable e) {
 			TestRunner.fail("Fail to delete web page", e);
 		}
 	}
@@ -978,22 +919,20 @@ public class UnitTest {
 	@Test
 	public void testDeleteWebPageSimple() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 		/**
-		 * This test should be modified according to the testing directory and the
-		 * search query. You should make sure that the test can support multiple file in
-		 * the same directory. You should test your implementation against cases
-		 * including: 1- word that does not exist in tree. 2- word exists. 3- lower
-		 * case, upper case, mix btw lower and upper, e.g.. THE, the, ThE, tHE....
-		 * According to each change you should modify the expected variable to have the
-		 * expected outcome.
+		 * This test should be modified according to the testing directory and the search query.
+		 * You should make sure that the test can support multiple file in the same directory.
+		 * You should test your implementation against cases including:
+		 * 1- word that does not exist in tree.
+		 * 2- word exists.
+		 * 3- lower case, upper case, mix btw lower and upper, e.g.. THE, the, ThE, tHE....
+		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
 			searchEngine.indexDirectory("res");
 			searchEngine.deleteWebPage("res\\wiki_00");
-			List<ISearchResult> expected = Arrays
-					.asList(new SearchResult[] { new SearchResult("7697605", 1), new SearchResult("7697611", 10) });
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
@@ -1019,23 +958,21 @@ public class UnitTest {
 	@Test
 	public void testDeleteWebPageUnIndexedWebPage() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 		/**
-		 * This test should be modified according to the testing directory and the
-		 * search query. You should make sure that the test can support multiple file in
-		 * the same directory. You should test your implementation against cases
-		 * including: 1- word that does not exist in tree. 2- word exists. 3- lower
-		 * case, upper case, mix btw lower and upper, e.g.. THE, the, ThE, tHE....
-		 * According to each change you should modify the expected variable to have the
-		 * expected outcome.
+		 * This test should be modified according to the testing directory and the search query.
+		 * You should make sure that the test can support multiple file in the same directory.
+		 * You should test your implementation against cases including:
+		 * 1- word that does not exist in tree.
+		 * 2- word exists.
+		 * 3- lower case, upper case, mix btw lower and upper, e.g.. THE, the, ThE, tHE....
+		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
 			searchEngine.indexWebPage("res\\wiki_00");
 			searchEngine.indexWebPage("res\\subfolder\\wiki_02");
 			searchEngine.deleteWebPage("res\\wiki_01");
-			List<ISearchResult> expected = Arrays
-					.asList(new SearchResult[] { new SearchResult("7697605", 1), new SearchResult("7697611", 10) });
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
@@ -1061,8 +998,7 @@ public class UnitTest {
 	@Test
 	public void testDeleteAllIndexedWebPage() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 
 		try {
 			searchEngine.indexWebPage("res\\wiki_00");
@@ -1087,19 +1023,19 @@ public class UnitTest {
 		/**
 		 * The rest use case of searchByWordWithRanking are covered in the other tests.
 		 */
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 
 		try {
 			searchEngine.searchByWordWithRanking(null);
 			Assert.fail();
 		} catch (RuntimeErrorException ex) {
 			Assert.assertEquals(0, searchEngine.searchByWordWithRanking("").size());
-		} catch (Throwable e) {
+		}
+		catch (Throwable e) {
 			TestRunner.fail("Fail to search web page", e);
 		}
 	}
-
+	
 	/**
 	 * Test searchByMultipleWordWithRanking with null or empty parameter.
 	 */
@@ -1108,15 +1044,15 @@ public class UnitTest {
 		/**
 		 * The rest use case of searchByWordWithRanking are covered in the other tests.
 		 */
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 
 		try {
 			searchEngine.searchByMultipleWordWithRanking(null);
 			Assert.fail();
 		} catch (RuntimeErrorException ex) {
 			Assert.assertEquals(0, searchEngine.searchByMultipleWordWithRanking("").size());
-		} catch (Throwable e) {
+		}
+		catch (Throwable e) {
 			TestRunner.fail("Fail to search web page", e);
 		}
 	}
@@ -1128,22 +1064,19 @@ public class UnitTest {
 	@Test
 	public void testsearchByMultipleWordWithRanking() {
 
-		ISearchEngine searchEngine = (ISearchEngine) TestRunner
-				.getImplementationInstanceForInterface(ISearchEngine.class, new Object[] { 100 });
+		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 		/**
-		 * This test should be modified according to the testing directory and the
-		 * search query. You should make sure that the test can support multiple file in
-		 * the same directory or nested directory up to multiple level. You should test
-		 * your implementation against cases including: 1- multiple words with different
-		 * cases that exists in the tree. e.g ThE sKy is bLuE, .... (Check that the rank
-		 * is the min) 2- multiple words with some of them not in the tree. According to
-		 * each change you should modify the expected variable to have the expected
-		 * outcome.
+		 * This test should be modified according to the testing directory and the search query.
+		 * You should make sure that the test can support multiple file in the same directory 
+		 * or nested directory up to multiple level.
+		 * You should test your implementation against cases including:
+		 * 1- multiple words with different cases that exists in the tree. e.g ThE sKy is bLuE, .... (Check that the rank is the min)
+		 * 2- multiple words with some of them not in the tree.
+		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
 			searchEngine.indexDirectory("res");
-			List<ISearchResult> expected = Arrays
-					.asList(new SearchResult[] { new SearchResult("7697605", 1), new SearchResult("7697611", 10) });
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByMultipleWordWithRanking("   tHe  is  aRE   		");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
@@ -1163,24 +1096,41 @@ public class UnitTest {
 			TestRunner.fail("Fail to index directory", e);
 		}
 	}
-
-	private int getHeight(IBTreeNode<?, ?> node) {
-		if (node.isLeaf())
-			return 0;
+	
+	private int getHeight (IBTreeNode<?, ?> node) {
+		if (node.isLeaf()) return 0;
 
 		return node.getNumOfKeys() > 0 ? 1 + getHeight(node.getChildren().get(0)) : 0;
 	}
 
-	private void traverseTreeInorder(IBTreeNode<Integer, String> node, List<Integer> keys, List<String> vals) {
-		int i;
-		for (i = 0; i < node.getNumOfKeys(); i++) {
+	private boolean verifyBTree (IBTreeNode<?, ?> node, int lvl, int height, int t, IBTreeNode<?, ?> root) {
+		if (!node.equals(root)) 
+			if (node.getNumOfKeys() < t - 1 || node.getNumOfKeys() > 2 * t - 1)
+				return false;
+		boolean ans = true;
+		if (!node.isLeaf()) {
+			for (int i = 0; i <= node.getNumOfKeys(); i++) {
+				ans = ans && verifyBTree(node.getChildren().get(i), lvl + 1, height, t, root);
+				if (!ans) break;
+			}
 
-			if (!node.isLeaf())
+		}else {
+			ans = ans && (lvl == height);
+		}
+		return ans;
+	} 
+
+	private void traverseTreeInorder(IBTreeNode<Integer, String> node, List<Integer> keys, List<String> vals) {
+		int i; 
+		for (i = 0; i < node.getNumOfKeys(); i++) 
+		{ 
+
+			if (!node.isLeaf()) 
 				traverseTreeInorder(node.getChildren().get(i), keys, vals);
 			keys.add(node.getKeys().get(i));
 			vals.add(node.getValues().get(i));
-		}
-		if (!node.isLeaf())
+		} 
+		if (!node.isLeaf()) 
 			traverseTreeInorder(node.getChildren().get(i), keys, vals);
 	}
 
@@ -1192,5 +1142,6 @@ public class UnitTest {
 			for (int j = 0; j <= node.getNumOfKeys(); j++)
 				traverseBtreePreOrder(node.getChildren().get(j), level + 1, keys);
 	}
+
 
 }

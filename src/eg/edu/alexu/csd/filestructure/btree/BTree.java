@@ -475,7 +475,7 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 					node.getKeys().set(i, successorKey);
 					node.getValues().set(i, successorValue);
 				} else {
-
+	
 					K predecessorKey = predecessor.getKeys().get(predecessor.getKeys().size() - 1);
 					V predecessorValue = predecessor.getValues().get(predecessor.getValues().size() - 1);
 					node.getKeys().set(i, predecessorKey);
@@ -580,6 +580,7 @@ public class BTree<K extends Comparable<K>, V> implements IBTree<K, V> {
 				parentChildren.get(childIndex).setChildren(children);
 
 				parentChildren.remove(childIndex - 1);
+				/// System.out.println(parent.getChildren().get(childIndex).getKeys().size());
 				/// // sibling
 
 				// parent.setChildren(parentChildren);
