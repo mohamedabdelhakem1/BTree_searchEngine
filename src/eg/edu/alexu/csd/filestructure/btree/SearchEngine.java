@@ -7,14 +7,26 @@ public class SearchEngine implements ISearchEngine {
 	private IBTree<String, HashMap<String, Integer>> btree;
 	
 	public SearchEngine() {
-		// TODO Auto-generated constructor stub
+		btree = new BTree<String, HashMap<String,Integer>>(10);
 	}
 	
 	
 	@Override
 	public void indexWebPage(String filePath) {
-		// TODO Auto-generated method stub
-		
+		HashMap<String, HashMap<String, Integer>> map = new HashMap<String, HashMap<String, Integer>>();
+		for(String id: map.keySet()) {
+			HashMap<String, Integer> words = map.get(id);
+			for(String word: words.keySet()) {
+				HashMap<String, Integer> wordIndices = btree.search(word);
+				if(wordIndices == null) {
+					wordIndices = new HashMap<String, Integer>();
+					wordIndices.put(id, words.get(word));
+					btree.insert(word, wordIndices);
+				} else {
+					wordIndices.put(id, words.get(word));
+				}
+			}
+		}
 	}
 
 	@Override
