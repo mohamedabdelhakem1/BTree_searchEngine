@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.management.RuntimeErrorException;
 
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 
 
