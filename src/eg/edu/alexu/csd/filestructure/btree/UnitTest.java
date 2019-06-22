@@ -810,7 +810,7 @@ public class UnitTest {
 		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
-			searchEngine.indexDirectory("res");
+			searchEngine.indexDirectory("res2");
 			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
@@ -850,7 +850,7 @@ public class UnitTest {
 		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
-			searchEngine.indexDirectory("res");
+			searchEngine.indexDirectory("res2");
 			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
@@ -916,13 +916,14 @@ public class UnitTest {
 		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
-			searchEngine.indexDirectory("res");
-			searchEngine.deleteWebPage("res\\wiki_00");
+			searchEngine.indexDirectory("res2");
+			//searchEngine.deleteWebPage("res\\wiki_00");
 			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());
 			}
+			
 			Collections.sort(actual, new Comparator<ISearchResult>() {
 				@Override
 				public int compare(ISearchResult o1, ISearchResult o2) {
@@ -955,9 +956,9 @@ public class UnitTest {
 		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
-			searchEngine.indexWebPage("res\\wiki_00");
-			searchEngine.indexWebPage("res\\subfolder\\wiki_02");
-			searchEngine.deleteWebPage("res\\wiki_01");
+			searchEngine.indexWebPage("res1\\wiki_00");
+		//	searchEngine.indexWebPage("res1\\subfolder\\wiki_02");
+		//	searchEngine.deleteWebPage("res1\\wiki_01");
 			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
@@ -987,12 +988,12 @@ public class UnitTest {
 		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
 
 		try {
-			searchEngine.indexWebPage("res\\wiki_00");
-			searchEngine.indexWebPage("res\\wiki_01");
-			searchEngine.indexWebPage("res\\subfolder\\wiki_02");
-			searchEngine.deleteWebPage("res\\wiki_01");
-			searchEngine.deleteWebPage("res\\subfolder\\wiki_02");
-			searchEngine.deleteWebPage("res\\wiki_00");
+			searchEngine.indexWebPage("res1\\wiki_00");
+			searchEngine.indexWebPage("res1\\wiki_01");
+			searchEngine.indexWebPage("res1\\subfolder\\wiki_02");
+			searchEngine.deleteWebPage("res1\\wiki_01");
+			searchEngine.deleteWebPage("res1\\subfolder\\wiki_02");
+			searchEngine.deleteWebPage("res1\\wiki_00");
 
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			Assert.assertEquals(0, actual.size());
@@ -1061,8 +1062,8 @@ public class UnitTest {
 		 * According to each change you should modify the expected variable to have the expected outcome.
 		 */
 		try {
-			searchEngine.indexDirectory("res");
-			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
+			searchEngine.indexDirectory("res2");
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697611", 1)});
 			List<ISearchResult> actual = searchEngine.searchByMultipleWordWithRanking("   tHe  is  aRE   		");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());

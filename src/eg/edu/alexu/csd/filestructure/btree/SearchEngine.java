@@ -73,6 +73,8 @@ public class SearchEngine implements ISearchEngine {
 
 	@Override
 	public List<ISearchResult> searchByWordWithRanking(String word) {
+		if(word == null) throw new RuntimeErrorException(new Error());
+		if(word.equals("" )) return  new ArrayList<ISearchResult>();
 		word = word.toLowerCase();
 		HashMap<String, Integer> wordIndices = btree.search(word);
 		List<ISearchResult> searchResults = new ArrayList<ISearchResult>();
@@ -86,14 +88,23 @@ public class SearchEngine implements ISearchEngine {
 
 	@Override
 	public List<ISearchResult> searchByMultipleWordWithRanking(String sentence) {
+		if(sentence == null) throw new RuntimeErrorException(new Error());
+		if(sentence.equals("" )) return  new ArrayList<ISearchResult>();	
 		sentence = sentence.toLowerCase();
 		HashMap<String, Integer> documents = null;
-		String[] wordsToSearch = sentence.split(" ");
+		sentence = sentence.trim();
+		String[] wordsToSearch = sentence.split("\\s+");
 		if(wordsToSearch.length > 0) {
 			documents = btree.search(wordsToSearch[0]);
 			for(int i = 1; i < wordsToSearch.length; i++) {
 				HashMap<String, Integer> nextWordindices = btree.search(wordsToSearch[i]);
-				Set<String> doc_ids = nextWordindices.keySet();
+				if(nextWordindices == null) {
+					return new ArrayList<>();
+				}
+				Set<String> doc_ids_set = nextWordindices.keySet();
+				String[] doc_ids = new String[doc_ids_set.size()];
+				doc_ids = doc_ids_set.toArray(doc_ids);
+				
 				for(String idnext: doc_ids) {
 					if(!documents.containsKey(idnext)) {
 						nextWordindices.remove(idnext);
@@ -103,7 +114,8 @@ public class SearchEngine implements ISearchEngine {
 						documents.put(idnext, rank);
 					}
 				}
-				doc_ids = documents.keySet();
+				doc_ids = documents.keySet().toArray(doc_ids);
+				
 				for(String idnext: doc_ids) {
 					if(!nextWordindices.containsKey(idnext)) {
 						documents.remove(idnext);
