@@ -917,8 +917,8 @@ public class UnitTest {
 		 */
 		try {
 			searchEngine.indexDirectory("res2");
-			//searchEngine.deleteWebPage("res\\wiki_00");
-			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{new SearchResult("7697605", 1), new SearchResult("7697611", 10)});
+			searchEngine.deleteWebPage("res\\wiki_00");
+			List<ISearchResult> expected = Arrays.asList(new SearchResult[]{});
 			List<ISearchResult> actual = searchEngine.searchByWordWithRanking("ThE");
 			for (ISearchResult searchRes : actual) {
 				System.out.println(searchRes.toString());

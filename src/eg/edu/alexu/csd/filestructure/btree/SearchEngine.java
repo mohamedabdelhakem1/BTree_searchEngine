@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
 import javax.management.RuntimeErrorException;
 
 public class SearchEngine implements ISearchEngine {
@@ -16,7 +15,6 @@ public class SearchEngine implements ISearchEngine {
 		btree = new BTree<String, HashMap<String,Integer>>(minDegree);
 		parser = new DocumentParser();
 	}
-	
 	
 	@Override
 	public void indexWebPage(String filePath) {
