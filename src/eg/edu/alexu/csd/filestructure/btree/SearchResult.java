@@ -31,4 +31,9 @@ public class SearchResult implements ISearchResult {
 		this.rank = rank;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return id + "      " +String.valueOf(rank);
+	}
 }

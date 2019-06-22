@@ -10,15 +10,18 @@ import javax.management.RuntimeErrorException;
 
 public class SearchEngine implements ISearchEngine {
 	private IBTree<String, HashMap<String, Integer>> btree;
+	private DocumentParser parser;
 	
-	public SearchEngine() {
-		btree = new BTree<String, HashMap<String,Integer>>(10);
+	public SearchEngine(int minDegree) {
+		btree = new BTree<String, HashMap<String,Integer>>(minDegree);
+		parser = new DocumentParser();
 	}
 	
 	
 	@Override
 	public void indexWebPage(String filePath) {
-		HashMap<String, HashMap<String, Integer>> map = new HashMap<String, HashMap<String, Integer>>();
+		if(filePath == null || filePath.isEmpty()) throw new RuntimeErrorException(new Error());
+		HashMap<String, HashMap<String, Integer>> map = parser.parse(filePath);
 		for(String id: map.keySet()) {
 			HashMap<String, Integer> words = map.get(id);
 			for(String word: words.keySet()) {
@@ -36,7 +39,9 @@ public class SearchEngine implements ISearchEngine {
 
 	@Override
 	public void indexDirectory(String directoryPath) {
+		if(directoryPath == null || directoryPath.isEmpty()) throw new RuntimeErrorException(new Error());
 		File dir = new File(directoryPath);
+		if(!dir.exists()) throw new RuntimeErrorException(new Error());
 		if(dir.isDirectory()) {
 			File[] files = dir.listFiles();
 			for (File file : files) {
@@ -53,7 +58,8 @@ public class SearchEngine implements ISearchEngine {
 
 	@Override
 	public void deleteWebPage(String filePath) {
-		HashMap<String, HashMap<String, Integer>> map = new HashMap<String, HashMap<String, Integer>>();
+		if(filePath == null || filePath.isEmpty()) throw new RuntimeErrorException(new Error());
+		HashMap<String, HashMap<String, Integer>> map = parser.parse(filePath);
 		for(String id: map.keySet()) {
 			HashMap<String, Integer> words = map.get(id);
 			for(String word: words.keySet()) {

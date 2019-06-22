@@ -707,7 +707,6 @@ public class UnitTest {
 	public void testindexWebPageNullorEmptyorNotFoundParamter() {
 
 		ISearchEngine searchEngine = (ISearchEngine) TestRunner.getImplementationInstanceForInterface(ISearchEngine.class, new Object[]{100});
-
 		try {
 			searchEngine.indexWebPage(null);
 			Assert.fail();
@@ -755,7 +754,8 @@ public class UnitTest {
 					return o1.getRank() - o2.getRank();
 				}
 			});
-
+			System.out.println(expected.size());
+			System.out.println(actual.size());
 			for (int i = 0; i < expected.size(); i++) {
 				Assert.assertEquals(expected.get(i).getId(), actual.get(i).getId());
 				Assert.assertEquals(expected.get(i).getRank(), actual.get(i).getRank());
