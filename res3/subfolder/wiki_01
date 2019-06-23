@@ -1,0 +1,35 @@
+<?xml version="1.0" ?> <class> 
+
+<doc id="7702780" url="https://en.wikipedia.org/wiki?curid=7702780" title="Source routing">
+Source routing
+In computer networking source routing also called path addressing allows a sender of a packet to partially or completely specify the route the packet takes through the network In contrast in conventional routing routers in the network determine the path incrementally based on the packets destination Another routing alternative label switching is used in connectionoriented networks such as X25 frame relay ATM and MPLS
+
+Source routing allows easier troubleshooting improved traceroute and enables a node to discover all the possible routes to a host It does not allow a source to directly manage network performance by forcing packets to travel over one path to prevent congestion on another
+
+Many highperformance interconnects including Myrinet Quadrics IEEE 1355 and SpaceWire support source routing
+
+In the Internet Protocol two header options are available which are rarely used strict source and record route SSRR and loose source and record route LSRR Because of security concerns packets marked LSRR are frequently blocked on the Internet If not blocked LSRR can allow an attacker to spoof its address but still successfully receive response packets
+
+In IPv6 two forms of source routing have been developed The first approach was the Type 0 Routing header  This routing header was designed to support the same use cases as the IPv4 header options Unfortunately there were several important attacks against this routing header and its utilisation was deprecated A more secure form of source routing is being developed within the IETF to support the IPv6 version of Segment Routing
+
+Softwaredefined networking can also be enhanced when source routing is used in the forwarding plane Studies have shown significant improvements in convergence times as a result of the reduced state that must be distributed by the controller into the network
+
+When using source routing with Myrinet the sender of the packet prepends the complete route one byte for every crossbar to each packet header
+Each crossbar examines the first routing byte of the packet
+When using source routing that byte indicates a particular port of that crossbar when that port becomes available the router discards that routing byte and sends the rest of the packet out that port
+
+Each packet traveling through a SpaceWire network can use path addressing source routing or logical addressing or some combination
+The router examines the first data character of the packet when it indicates some specific port of the router the router discards that routing character and sends the rest of the packet out that port
+
+
+
+
+</doc>
+<doc id="7702785" url="https://en.wikipedia.org/wiki?curid=7702785" title="Cuba at the 1904 Summer Olympics">
+Cuba at the 1904 Summer Olympics
+Cuba competed at the 1904 Summer Olympics in St Louis United States
+
+
+
+</doc>
+</class>
